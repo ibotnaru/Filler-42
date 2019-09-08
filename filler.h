@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 22:36:31 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/07 22:35:57 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/08 13:27:52 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdio.h>
-
 # include "./libft/libft.h"
 
 typedef	struct	s_struct
@@ -28,17 +27,23 @@ typedef	struct	s_struct
 	int			plateau_y;
 	int			plateau_x;
 	char		**piece;
-	int			piece_x;
 	int			piece_y;
+	int			piece_x;
 }				t_struct;
 
 /*
-** All the functions are arranged in order that they appear in the programm
+** All the functions are arranged in order
+** that they appear in the programm
 */
 
+/*
+** Parsing
+*/
 void	parsing(int fd, char *line, t_struct *strct);
 void	get_player(int fd, char *line, t_struct *strct);
-void	get_plateau(int fd, char *line, t_struct *strct);
-void	fill_plt(int fd, char *line, t_struct *strct);
+void	get_plateau(char *line, t_struct *strct);
+char	*fill_plt(int fd, char *line, t_struct *strct);
+void	get_piece(int fd, char *line, t_struct *strct);
+void	put_piece(int fd, char *line, t_struct *strct);
 
 #endif
