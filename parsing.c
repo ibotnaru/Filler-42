@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 12:22:07 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/08 13:33:56 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/08 23:05:58 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void		put_piece(int fd, char *line, t_struct *strct)
 			i++;
 		}
 		strct->piece[j][i] = '\0';
-		//printf("[%2d]  %s\n", j, strct->piece[j]);
+		printf("[%2d]  %s\n", j, strct->piece[j]);
 		j++;
+		free(line);
 		get_next_line(fd, &line);
 	}
 	strct->piece[j] = NULL;
@@ -45,6 +46,11 @@ void		get_piece(int fd, char *line, t_struct *strct)
 		substr = ft_strsplit(line, ' ');
 		strct->piece_y = ft_atoi(substr[1]);
 		strct->piece_x = ft_atoi(substr[2]);
+		free(substr[0]);
+		free(substr[1]);
+		free(substr[2]);
+		free(substr);
+		free(line);
 		get_next_line(fd, &line);
 		put_piece(fd, line, strct);
 	}
@@ -81,6 +87,7 @@ char		*fill_plt(int fd, char *line, t_struct *strct)
 			strct->plateau[j][i] = '\0';
 			//printf("[%2d]  %s\n", j, strct->plateau[j]);
 			j++;
+			free(line);
 			get_next_line(fd, &line);
 		}
 		strct->plateau[j] = NULL;
@@ -102,6 +109,10 @@ void		get_plateau(char *line, t_struct *strct)
 		substr = ft_strsplit(line, ' ');
 		strct->plateau_y = ft_atoi(substr[1]);
 		strct->plateau_x = ft_atoi(substr[2]);
+		free(substr[0]);
+		free(substr[1]);
+		free(substr[2]);
+		free(substr);
 	}
 }
 
