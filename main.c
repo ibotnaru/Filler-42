@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 20:02:25 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/08 23:16:36 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/10 20:42:19 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void		parsing(int fd, char *line, t_struct *strct)
 {
-	if(strct->flag_player == 0)
+	if(strct->player_on == 0)
 		get_player(fd, line, strct);
-	if (strct->flag_player == 1)
+	if (strct->player_on == 1)
 	{
 		get_plateau(line, strct);
 		line = fill_plt(fd, line, strct);
@@ -35,9 +35,9 @@ int			main (void)
 	while (get_next_line(fd, &line) > 0)			//read till EOF
 	{
 		parsing(fd, line, &strct);				//reading from the map and pars line by line
-		free(line);
+		//free(line);
 	}
 	/* Check for leaks: */
-	while (1);		//infinite loop
+	//while (1);		//infinite loop
 	return(0);
 }

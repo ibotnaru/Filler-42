@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 12:22:07 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/08 23:05:58 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/10 20:49:40 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void		put_piece(int fd, char *line, t_struct *strct)
 			i++;
 		}
 		strct->piece[j][i] = '\0';
-		printf("[%2d]  %s\n", j, strct->piece[j]);
 		j++;
 		free(line);
 		get_next_line(fd, &line);
 	}
 	strct->piece[j] = NULL;
+	validation(strct); 					//вынести в отд функц всю логику
 }
 
 void		get_piece(int fd, char *line, t_struct *strct)
@@ -85,7 +85,6 @@ char		*fill_plt(int fd, char *line, t_struct *strct)
 				i++;
 			}
 			strct->plateau[j][i] = '\0';
-			//printf("[%2d]  %s\n", j, strct->plateau[j]);
 			j++;
 			free(line);
 			get_next_line(fd, &line);
@@ -127,12 +126,12 @@ void		get_player(int fd, char *line, t_struct *strct)
 
 	if (ft_strncmp(line, "$$$ exec p1 : [../ibotnaru.filler]", 34) == 0)
 	{
-		strct->player_on = 'O';
-		strct->flag_player = 1;
+		strct->player = 'O';
+		strct->player_on = 1;
 	}
 	else if (ft_strncmp(line, "$$$ exec p2 : [../ibotnaru.filler]", 34) == 0)
 	{
-		strct->player_on = 'X';
-		strct->flag_player = 1;
+		strct->player = 'X';
+		strct->player_on = 1;
 	}
 }
