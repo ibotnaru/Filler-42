@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 22:36:31 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/10 20:11:59 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/12 19:54:47 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	put_piece(int fd, char *line, t_struct *strct);
 ** Validation
 */
 void	validation(t_struct *strct);
-char	**sub_plateu(t_struct *strct, int i, int j);
-void	change_piece(t_struct *strct);
-int		valid_plc(t_struct *strct, char **sub_plt);
+int		find_match(t_struct *strct, int j, int i);
 
 #endif
