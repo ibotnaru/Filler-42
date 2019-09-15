@@ -6,13 +6,13 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 12:22:07 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/10 20:49:40 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/14 18:20:24 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void		put_piece(int fd, char *line, t_struct *strct)
+void		create_piece_in_strct(int fd, char *line, t_struct *strct)
 {
 	int		i;
 	int		j;
@@ -52,7 +52,7 @@ void		get_piece(int fd, char *line, t_struct *strct)
 		free(substr);
 		free(line);
 		get_next_line(fd, &line);
-		put_piece(fd, line, strct);
+		create_piece_in_strct(fd, line, strct);
 	}
 }
 
@@ -116,7 +116,7 @@ void		get_plateau(char *line, t_struct *strct)
 }
 
 /*
-** This function should find player "ibotnaru"
+** This function should find player "ibotnaru" and the opponent
 ** searching line by line.
 ** Be careful in which directory you create your player! (../, ./, etc)
 ** $$$ exec p1 : [../ibotnaru.filler]
@@ -133,5 +133,15 @@ void		get_player(int fd, char *line, t_struct *strct)
 	{
 		strct->player = 'X';
 		strct->player_on = 1;
+	}
+	if (strct->player == 'O')
+	{
+		strct->opponent = 'X';
+		strct->opponent_on = 1;
+	}
+	else if (strct->player == 'X')
+	{
+		strct->opponent = 'O';
+		strct->opponent_on = 1;
 	}
 }
