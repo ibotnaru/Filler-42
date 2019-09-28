@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 23:57:32 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/14 19:45:16 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/20 22:09:40 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,26 @@
 /*
 ** Counts the sum of '.' after heat_map where the piece is placed.
 */
-int		clc_sum(t_struct *strct, int j, int i)
+
+int		clc_sum(t_struct *strct, int **map, int j, int i)
 {
 	int		kj;
 	int		ki;
 	int		sum;
 
-	kj = 0;
-	ki = 0;
-	while (kj < strct->piece_y)
+	sum = 0;
+	kj = -1;
+	ki = -1;
+	while (++kj < strct->piece_y)
 	{
-		ki =0;
-		while (ki < strct->piece_x)
+		ki = -1;
+		while (++ki < strct->piece_x)
 		{
 			if (strct->piece[kj][ki] == '*')
 			{
-				if ((((j + kj) <= strct->plateau_y)
-					&& ((i + ki) <= strct->plateau_x))
-					&& (strct->plateau[j + kj][i + ki] == strct->player))
-					sum += strct->plateau[j + kj][i + ki];
+				sum += map[j + kj][i + ki];
 			}
-			ki++;
 		}
-		kj++;
 	}
 	return (sum);
 }
@@ -51,6 +48,7 @@ int		clc_sum(t_struct *strct, int j, int i)
 ** position(dot) on the map to clc_sum funct which returns the sum of
 ** of the dots where the piece is placed.
 */
+
 void	place_piece(t_struct *strct, int **map)
 {
 	int		j;
@@ -58,19 +56,24 @@ void	place_piece(t_struct *strct, int **map)
 	int		sum;
 	int		tmp;
 
-	j = 0;
-	i = 0;
+	j = -1;
 	sum = 0;
 	tmp = -1;
-	while(j < strct->plateau_y)
+	while (++j < strct->plt_y)
 	{
-		while (i < strct->plateau_x)
+		i = -1;
+		while (++i < strct->plt_x)
 		{
-			sum = clc_sum(&strct, j, i);
-			if (tmp >= sum || tmp == -1)
-				tmp = sum;
-			i++;
+			if (find_match(strct, j, i) == 1)
+			{
+				sum = clc_sum(strct, map, j, i);
+				if (tmp > sum || tmp == -1)
+				{
+					tmp = sum;
+					strct->y_for_print = j;
+					strct->x_for_print = i;
+				}
+			}
 		}
-		j++;
 	}
 }

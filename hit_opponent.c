@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 23:41:40 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/13 23:30:30 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/27 19:53:50 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,38 @@
 
 /*
 ** Ceates a **map of integers, where '.' is -1,
-** player - 88 and opponent - 1, based on the
-** original plateau.
+** player - (-8) and opponent - 1, based on the
+** original plt.
 */
+
 int		**create_map(t_struct *strct)
 {
 	int		i;
 	int		j;
 	int		**map;
 
-	i = 0;
-	j = 0;
-	map = (int **)malloc(sizeof(int *) * (strct->plateau_y + 1));
-	while (j < strct->plateau_y)
+	i = -1;
+	j = -1;
+	map = (int **)malloc(sizeof(int *) * (strct->plt_y + 1));
+	while (++j < strct->plt_y)
 	{
-		i = 0;
-		map[j] = (int *)malloc(sizeof(int) * (strct->plateau_x + 1));
-		while (i < strct->plateau_x)
+		i = -1;
+		map[j] = (int *)malloc(sizeof(int) * (strct->plt_x + 1));
+		while (++i < strct->plt_x)
 		{
-			if (strct->plateau[j][i] == '.')
+			if (strct->plt[j][i] == '.')
 				map[j][i] = -1;
-			else if ((strct->plateau[j][i] == strct->player)
-				|| (strct->plateau[j][i] == strct->player + 32))	// O || o
-				map[j][i] = 88;
-			else if ((strct->plateau[j][i] == strct->opponent)
-				|| (strct->plateau[j][i] == strct->opponent + 32))		// X || x
+			else if ((strct->plt[j][i] == strct->player)
+				|| (strct->plt[j][i] == strct->player + 32))
+				map[j][i] = -8;
+			else if ((strct->plt[j][i] == strct->opponent)
+				|| (strct->plt[j][i] == strct->opponent + 32))
 				map[j][i] = 1;
-			i++;
 		}
 		map[j][i] = 0;
-		j++;
 	}
 	map[j] = NULL;
-	return(map);
+	return (map);
 }
 
 /*
@@ -57,7 +56,8 @@ int		**create_map(t_struct *strct)
 ** i>0 if i-1 is out of borders
 ** i!=0 if i+1 is out of borders
 */
-int		**surround_opp(t_struct *strct, int **map, int j, int i, int cnt)
+
+int		**surround_opp(int **map, int j, int i, int cnt)
 {
 	if (j > 0 && map[j + 1] && i > 0 && i != 0 && map[j - 1][i] == -1)
 		map[j - 1][i] = 1 + cnt;
@@ -84,6 +84,7 @@ int		**surround_opp(t_struct *strct, int **map, int j, int i, int cnt)
 ** oround him to "calculate"(ints) the best position for your piece.
 ** The new plateu is a two-dimensnl array of (numbers)integers.
 */
+
 int		**heat_map(t_struct *strct)
 {
 	int		i;
@@ -95,28 +96,21 @@ int		**heat_map(t_struct *strct)
 	i = 0;
 	j = 0;
 	k = 0;
-	cnt = 1;
-	map = create_map(strct); //till this point everything works
-	if (strct->plateau_x > strct->plateau_y)
-		k = strct->plateau_x;
-	else
-		k = strct->plateau_y;
-	while (cnt < k)
+	cnt = 0;
+	map = create_map(strct);
+	k = strct->plt_x > strct->plt_y ? strct->plt_x : strct->plt_y;
+	while (++cnt < k)
 	{
-		j = 0;
-		while (j < strct->plateau_y)
+		j = -1;
+		while (++j < strct->plt_y)
 		{
-			i = 0;
-			while (i < strct->plateau_x)
+			i = -1;
+			while (++i < strct->plt_x)
 			{
-				if (map[j][i] == cnt)								//found the opponent
-					map = surround_opp(strct, map, j, i, cnt);				//surround the opponent
-
-				i++;
+				if (map[j][i] == cnt)
+					map = surround_opp(map, j, i, cnt);
 			}
-			j++;
 		}
-		cnt++;
 	}
 	return (map);
 }
