@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 16:16:24 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/06 16:07:41 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/29 12:51:38 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ typedef struct		s_list
 ** get_next_line struct:
 */
 
-typedef struct	s_line
+typedef struct		s_line
 {
-	char				*str;
-	int					fd;
-	struct s_line		*next;
-}				t_line;
+	char			*str;
+	int				fd;
+	struct s_line	*next;
+}					t_line;
 
 /*
 ** libft functions :
@@ -121,9 +121,9 @@ int					ft_my_intlen(int num);
 ** get_next_line functions :
 */
 
-int				get_next_line(const int fd, char **line);
-int				reading(int fd, char **line, t_line **head);
-void			get_tail(const int fd, char *buf, t_line **head);
-int				len(char *s, int c);
+int					get_next_line(const int fd, char **line);
+int					reading(int fd, char **line, t_line **head);
+void				get_tail(const int fd, char *buf, t_line **head);
+int					len(char *s, int c);
 
 #endif

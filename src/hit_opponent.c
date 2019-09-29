@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 23:41:40 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/27 19:53:50 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/29 13:13:22 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,27 @@
 ** original plt.
 */
 
-int		**create_map(t_struct *strct)
+int		**create_map(t_struct *sct)
 {
 	int		i;
 	int		j;
 	int		**map;
 
-	i = -1;
 	j = -1;
-	map = (int **)malloc(sizeof(int *) * (strct->plt_y + 1));
-	while (++j < strct->plt_y)
+	map = (int **)malloc(sizeof(int *) * (sct->plt_y + 1));
+	while (++j < sct->plt_y)
 	{
 		i = -1;
-		map[j] = (int *)malloc(sizeof(int) * (strct->plt_x + 1));
-		while (++i < strct->plt_x)
+		map[j] = (int *)malloc(sizeof(int) * (sct->plt_x + 1));
+		while (++i < sct->plt_x)
 		{
-			if (strct->plt[j][i] == '.')
+			if (sct->plt[j][i] == '.')
 				map[j][i] = -1;
-			else if ((strct->plt[j][i] == strct->player)
-				|| (strct->plt[j][i] == strct->player + 32))
+			else if ((sct->plt[j][i] == sct->player)
+				|| (sct->plt[j][i] == sct->player + 32))
 				map[j][i] = -8;
-			else if ((strct->plt[j][i] == strct->opponent)
-				|| (strct->plt[j][i] == strct->opponent + 32))
+			else if ((sct->plt[j][i] == sct->opponent)
+				|| (sct->plt[j][i] == sct->opponent + 32))
 				map[j][i] = 1;
 		}
 		map[j][i] = 0;
@@ -85,7 +84,7 @@ int		**surround_opp(int **map, int j, int i, int cnt)
 ** The new plateu is a two-dimensnl array of (numbers)integers.
 */
 
-int		**heat_map(t_struct *strct)
+int		**heat_map(t_struct *sct)
 {
 	int		i;
 	int		j;
@@ -93,19 +92,17 @@ int		**heat_map(t_struct *strct)
 	int		cnt;
 	int		**map;
 
-	i = 0;
-	j = 0;
 	k = 0;
 	cnt = 0;
-	map = create_map(strct);
-	k = strct->plt_x > strct->plt_y ? strct->plt_x : strct->plt_y;
+	map = create_map(sct);
+	k = sct->plt_x > sct->plt_y ? sct->plt_x : sct->plt_y;
 	while (++cnt < k)
 	{
 		j = -1;
-		while (++j < strct->plt_y)
+		while (++j < sct->plt_y)
 		{
 			i = -1;
-			while (++i < strct->plt_x)
+			while (++i < sct->plt_x)
 			{
 				if (map[j][i] == cnt)
 					map = surround_opp(map, j, i, cnt);

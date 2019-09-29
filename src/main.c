@@ -6,26 +6,26 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 20:02:25 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/27 23:23:56 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/29 13:20:13 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void		parsing(int fd, char *line, t_struct *strct)
+void	parsing(int fd, char *line, t_struct *sct)
 {
-	if(strct->player_on == 0)
+	if (sct->player_on == 0)
 	{
-		line = get_player(line, strct, fd);
+		line = get_player(line, sct, fd);
 		free(line);
 	}
 	else
 	{
-		line = get_plt(line, strct, fd);
-		line = fill_plt(fd, line, strct);
-		line = get_piece(line, strct, fd);
-		line = create_piece_in_strct(line, strct, fd);
-		validation(strct);
+		line = get_plt(line, sct, fd);
+		line = fill_plt(fd, line, sct);
+		line = get_piece(line, sct, fd);
+		line = create_piece_in_sct(line, sct, fd);
+		validation(sct);
 		free(line);
 	}
 }
@@ -39,12 +39,11 @@ int		main(void)
 {
 	int			fd;
 	char		*line;
-	t_struct	strct;
+	t_struct	sct;
 
 	fd = 0;
-	fd = open("filler.txt", O_RDONLY);
-	ft_bzero(&strct, sizeof(t_struct));
+	ft_bzero(&sct, sizeof(t_struct));
 	while (get_next_line(fd, &line) > 0)
-		parsing(fd, line, &strct);
+		parsing(fd, line, &sct);
 	return (0);
 }

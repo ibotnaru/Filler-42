@@ -6,61 +6,54 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 18:43:54 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/27 23:14:33 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/29 13:14:00 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-char	*create_piece_in_strct(char *line, t_struct *strct, int fd)
+char	*create_piece_in_sct(char *line, t_struct *sct, int fd)
 {
 	int		i;
 	int		j;
 
-	i = -1;
 	free(line);
 	get_next_line(fd, &line);
-	free(line);
-	strct->piece = (char **)malloc(sizeof(char*) * (strct->piece_y + 1));
-	while (++i < strct->piece_y)
-		strct->piece[i] = (char *)malloc(sizeof(char) * (strct->piece_x + 1));
-	i = 0;
-	while (i < strct->piece_y)
+	sct->piece = (char **)malloc(sizeof(char*) * (sct->piece_y + 1));
+	i = -1;
+	while (++i < sct->piece_y)
 	{
-		j = 0;
-		while (j < strct->piece_x)
+		j = -1;
+		sct->piece[i] = (char *)malloc(sizeof(char) * (sct->piece_x + 1));
+		while (++j < sct->piece_x)
+			sct->piece[i][j] = line[j];
+		sct->piece[i][j] = '\0';
+		if (i + 1 < sct->piece_y)
 		{
-			strct->piece[i][j] = line[j];
-			j++;
-		}
-		strct->piece[i][j] = '\0';
-		i++;
-		if (i < strct->piece_y)
-		{
-			get_next_line(fd, &line);
 			free(line);
+			get_next_line(fd, &line);
 		}
 	}
-	strct->piece[i] = NULL;
+	sct->piece[i] = NULL;
 	return (line);
 }
 
-char	*get_piece(char *line, t_struct *strct, int fd)
+char	*get_piece(char *line, t_struct *sct, int fd)
 {
-	char	**str_d;
+	char	**substr;
 
 	while (ft_strncmp(line, "Piece", 4) != 0)
 	{
 		free(line);
 		get_next_line(fd, &line);
 	}
-	str_d = ft_strsplit(line, ' ');
-	strct->piece_y = ft_atoi(str_d[1]);
-	strct->piece_x = ft_atoi(str_d[2]);
-	free(str_d[0]);
-	free(str_d[1]);
-	free(str_d[2]);
-	free(str_d);
+	substr = ft_strsplit(line, ' ');
+	sct->piece_y = ft_atoi(substr[1]);
+	sct->piece_x = ft_atoi(substr[2]);
+	free(substr[0]);
+	free(substr[1]);
+	free(substr[2]);
+	free(substr);
 	return (line);
 }
 
@@ -70,36 +63,29 @@ char	*get_piece(char *line, t_struct *strct, int fd)
 ** byte by byte, line by line.
 */
 
-char		*fill_plt(int fd, char *line, t_struct *strct)
+char	*fill_plt(int fd, char *line, t_struct *sct)
 {
 	int		i;
 	int		j;
 	int		idx;
 
-	idx = 4;
-	i = 0;
-	j = 0;
-	if (ft_strncmp(line, "000", 3) == 0)
+	j = -1;
+	sct->plt = (char **)malloc(sizeof(char *) * (sct->plt_y + 1));
+	while (++j < sct->plt_y)
 	{
-		strct->plt = (char **)malloc(sizeof(char *) * (strct->plt_y + 1));
-		while (j < strct->plt_y)
+		idx = 4;
+		i = -1;
+		sct->plt[j] = (char *)malloc(sizeof(char) * (sct->plt_x + 1));
+		while (++i < sct->plt_x)
 		{
-			idx = 4;
-			i = 0;
-			strct->plt[j] = (char *)malloc(sizeof(char) * (strct->plt_x + 1));
-			while (i < strct->plt_x)
-			{
-				strct->plt[j][i] = line[idx];
-				idx++;
-				i++;
-			}
-			strct->plt[j][i] = '\0';
-			j++;
-			free(line);
-			get_next_line(fd, &line);
+			sct->plt[j][i] = line[idx];
+			idx++;
 		}
-		strct->plt[j] = NULL;
+		sct->plt[j][i] = '\0';
+		free(line);
+		get_next_line(fd, &line);
 	}
+	sct->plt[j] = NULL;
 	return (line);
 }
 
@@ -109,22 +95,22 @@ char		*fill_plt(int fd, char *line, t_struct *strct)
 ** "Plateau" "15" "17:"
 */
 
-char	*get_plt(char *line, t_struct *strct, int fd)
+char	*get_plt(char *line, t_struct *sct, int fd)
 {
-	char	**str_d;
+	char	**substr;
 
 	while (ft_strncmp(line, "Plateau ", 7) != 0)
 	{
 		free(line);
 		get_next_line(fd, &line);
 	}
-	str_d = ft_strsplit(line, ' ');
-	strct->plt_y = ft_atoi(str_d[1]);
-	strct->plt_x = ft_atoi(str_d[2]);
-	free(str_d[0]);
-	free(str_d[1]);
-	free(str_d[2]);
-	free(str_d);
+	substr = ft_strsplit(line, ' ');
+	sct->plt_y = ft_atoi(substr[1]);
+	sct->plt_x = ft_atoi(substr[2]);
+	free(substr[0]);
+	free(substr[1]);
+	free(substr[2]);
+	free(substr);
 	while (ft_strncmp(line, "000", 3) != 0)
 	{
 		free(line);
@@ -140,7 +126,7 @@ char	*get_plt(char *line, t_struct *strct, int fd)
 ** $$$ exec p1 : [../ibotnaru.filler]
 */
 
-char	*get_player(char *line, t_struct *strct, int fd)
+char	*get_player(char *line, t_struct *sct, int fd)
 {
 	while (ft_strncmp(line, "$$$ exec p", 9) != 0)
 	{
@@ -149,14 +135,14 @@ char	*get_player(char *line, t_struct *strct, int fd)
 	}
 	if (line[10] == '1')
 	{
-		strct->player = 'O';
-		strct->opponent = 'X';
+		sct->player = 'O';
+		sct->opponent = 'X';
 	}
 	else
 	{
-		strct->player = 'X';
-		strct->opponent = 'O';
+		sct->player = 'X';
+		sct->opponent = 'O';
 	}
-	strct->player_on = 1;
+	sct->player_on = 1;
 	return (line);
 }

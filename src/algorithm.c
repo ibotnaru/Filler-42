@@ -6,7 +6,7 @@
 /*   By: ibotnaru <ibotnaru@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 23:57:32 by ibotnaru          #+#    #+#             */
-/*   Updated: 2019/09/20 22:09:40 by ibotnaru         ###   ########.fr       */
+/*   Updated: 2019/09/29 13:15:10 by ibotnaru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Counts the sum of '.' after heat_map where the piece is placed.
 */
 
-int		clc_sum(t_struct *strct, int **map, int j, int i)
+int		clc_sum(t_struct *sct, int **map, int j, int i)
 {
 	int		kj;
 	int		ki;
@@ -25,12 +25,12 @@ int		clc_sum(t_struct *strct, int **map, int j, int i)
 	sum = 0;
 	kj = -1;
 	ki = -1;
-	while (++kj < strct->piece_y)
+	while (++kj < sct->piece_y)
 	{
 		ki = -1;
-		while (++ki < strct->piece_x)
+		while (++ki < sct->piece_x)
 		{
-			if (strct->piece[kj][ki] == '*')
+			if (sct->piece[kj][ki] == '*')
 			{
 				sum += map[j + kj][i + ki];
 			}
@@ -49,7 +49,7 @@ int		clc_sum(t_struct *strct, int **map, int j, int i)
 ** of the dots where the piece is placed.
 */
 
-void	place_piece(t_struct *strct, int **map)
+void	place_piece(t_struct *sct, int **map)
 {
 	int		j;
 	int		i;
@@ -59,19 +59,19 @@ void	place_piece(t_struct *strct, int **map)
 	j = -1;
 	sum = 0;
 	tmp = -1;
-	while (++j < strct->plt_y)
+	while (++j < sct->plt_y)
 	{
 		i = -1;
-		while (++i < strct->plt_x)
+		while (++i < sct->plt_x)
 		{
-			if (find_match(strct, j, i) == 1)
+			if (find_match(sct, j, i) == 1)
 			{
-				sum = clc_sum(strct, map, j, i);
+				sum = clc_sum(sct, map, j, i);
 				if (tmp > sum || tmp == -1)
 				{
 					tmp = sum;
-					strct->y_for_print = j;
-					strct->x_for_print = i;
+					sct->y_for_print = j;
+					sct->x_for_print = i;
 				}
 			}
 		}
